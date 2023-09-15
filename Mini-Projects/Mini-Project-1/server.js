@@ -4,20 +4,19 @@ const path = require('path');
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
-    
+
+    // Read user data from a file using fs and path modules
     if (req.method === 'GET' && req.url == '/') {
         fs.readFile(path.join(__dirname, 'users.json'), 'utf8', (err, data) => {
             if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain'});
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.end('Internal Server Error');
-                console.log("hello from /");
                 return;
             }
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(data);
         });
-    }else if (req.method === 'GET' && req.url === '/api/users') {
-        // Read user data from a file using fs and path modules
+    } else if (req.method === 'GET' && req.url === '/api/users') {
         fs.readFile(path.join(__dirname, 'users.json'), 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -28,7 +27,6 @@ const server = http.createServer((req, res) => {
             res.end(data);
         });
     } else {
-        console.log("hello frim api users");
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
     }

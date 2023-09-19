@@ -1,4 +1,4 @@
-#Mini Project 1
+# Mini Project 1
 This branch is created for mini project to run download the project and node fileOperations.js
 Running will cause the program to 
 1. Read a already creaded txt file and display the result in the console.

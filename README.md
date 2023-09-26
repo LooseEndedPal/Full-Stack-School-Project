@@ -14,3 +14,6 @@ This project work similar to Example 3. It has a list of items displayed on scre
 - Increase the quantity of the item
 - Decrease the quantity of the item. If it's 0 it will also remove it 
 - The add item page also allows you to go back to the shopping list page
+
+# Badges
+<a href="https://codeclimate.com/github/LooseEndedPal/Modern-Web-Technologies-Archive/maintainability"><img src="https://api.codeclimate.com/v1/badges/7423b9e695feed0888a7/maintainability" /></a>

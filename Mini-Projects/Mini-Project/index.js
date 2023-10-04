@@ -19,14 +19,33 @@ app.use((req, res, next) => {
     next()
 })
 
-
 app.get('/', (req, res) => {
-    res.render("shoppingList.ejs", { shoppingList });
+    timer(2, req, res);
 })
 
 app.get('/add', (req, res) => {
-    res.render('updateList.ejs');
+    timer(1, req, res);
 })
+
+async function timer(params, req, res) {
+    let results = await lol(params, req, res);     
+}
+
+const lol = function(params, req, res){
+    console.log(res);
+    setTimeout(() => {
+        console.log(res);
+        if(params == 1){
+            res.render('updateList.ejs');
+        }
+        else if(params){
+            res.render("shoppingList.ejs", { shoppingList });
+        }
+        else{
+            res.status(404).send("Invalid button clicked");    
+        }
+    }, 1000);
+}
 
 
 app.post('/api/shoppingList/increaseQuantity/:id', (req, res) => {
@@ -68,7 +87,6 @@ app.post('/api/shoppingList/delete/:id', (req, res) => {
 
     if (index !== -1) {
         shoppingList.splice(index, 1);
-        // res.status(200).send(`Workout with ID ${workoutId} deleted.`)
         res.redirect('/');
     }
     else {

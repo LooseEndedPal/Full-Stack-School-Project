@@ -1,5 +1,5 @@
-# Mini-Project-3
-This branch is for mini-project-3 to run. Clone, make sure all dependancies are installed on your computer and nodemon index.js
+# Mini-Project-4
+This branch is for mini-project-4 to run. Clone, make sure all dependancies are installed on your computer and nodemon index.js
 Required installation
 - Node.js
 - Express
@@ -8,12 +8,7 @@ Required installation
 - Ejs
 
 # Update Functionality
-This project work similar to Example 3. It has a list of items displayed on screen where you can see the item name and how much is on the list. The button's allow you to do the following.
-- Add an item
-- Delete the item
-- Increase the quantity of the item
-- Decrease the quantity of the item. If it's 0 it will also remove it 
-- The add item page also allows you to go back to the shopping list page
+-Added a call back using async and await in index.js which will wait for a timer to grab the api of the JSON 
 
 # Badges
 <a href="https://codeclimate.com/github/LooseEndedPal/Modern-Web-Technologies-Archive/maintainability"><img src="https://api.codeclimate.com/v1/badges/7423b9e695feed0888a7/maintainability" /></a>

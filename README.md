@@ -10,5 +10,5 @@ Required installation
 # Update Functionality
 -Added a call back using async and await in index.js which will wait for a timer to grab the api of the JSON 
 
-#Badges
+# Badges
 <a href="https://codeclimate.com/github/LooseEndedPal/Modern-Web-Technologies-Archive/maintainability"><img src="https://api.codeclimate.com/v1/badges/7423b9e695feed0888a7/maintainability" /></a>

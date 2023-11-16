@@ -1,5 +1,5 @@
 # Mini-Project-7
-This branch is for mini-project-7 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-frontend and npm start.
+This branch is for mini-project-7 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and npm start.
 Required installation:
 - Node.js
 - Express

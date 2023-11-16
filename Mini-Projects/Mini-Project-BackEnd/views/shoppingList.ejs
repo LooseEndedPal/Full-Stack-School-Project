@@ -1,20 +1,22 @@
 <h1>My Shopping List</h1>
 
-<% for(x = 0; x < shoppingList.length; x++){%>
-    <h2><%= shoppingList[x].name %></h2>
-    <p>Quantity: <%= shoppingList[x].quantity %></p>
+<% for(x = 0; x < posts.length; x++){%>
+    <h2><%= posts[x].name %></h2>
+    <p>Quantity: <%= posts[x].likes %></p>
+    <p>Quantity: <%= posts[x].dislikes %></p>
+    <p><%= posts[x].name %></p>
 
-    <form action="/api/shoppingList/increaseQuantity/<%= shoppingList[x].id %>" method = "post">
+    <form action="/api/posts/increaseQuantity/<%= posts[x].id %>" method = "post">
         <button type = "submit">Add +1</button>
     </form>
 
-    <form action="/api/shoppingList/decreaseQuantity/<%= shoppingList[x].id %>" method = "post">
+    <form action="/api/posts/decreaseQuantity/<%= posts[x].id %>" method = "post">
         <button type = "submit">Remove -1</button>
     </form>
 
-    <form action="/api/shoppingList/delete/<%= shoppingList[x].id %>" method="post">
+    <form action="/api/posts/delete/<%= posts[x].id %>" method="post">
         <input type="hidden" name="_method" value="DELETE">
-        <button>Delete <%= shoppingList[x].name %></button>
+        <button>Delete <%= posts[x].name %></button>
     </form>
 <%}%>
 

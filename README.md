@@ -1,5 +1,5 @@
-# Mini-Project-7
-This branch is for mini-project-7 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and npm start.
+# Mini-Project-8
+This branch is for mini-project-8 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and npm start.
 Required installation:
 - Node.js
 - Express
@@ -8,11 +8,17 @@ Required installation:
 - Ejs
 - React
 - MongoDB
+- Mongoose
 
 ## Update Functionality
-Added MongoDB functionality modified:
-- Post method
-- Get method
+Changed all MongoDB features to Mongoose Features, Changed variables and path names to more appropriate names
+- Post methods changed for mongoose
+- Views adjusted to for appropriateness
+- Removed unused code and changed path and variable names
+- Added gitignore
+
+## Current Bugs
+- Description not being added to the database even through the schema and add contains it with no typos 
 
 ## How to Run
 1. Make sure to have the required installations set up

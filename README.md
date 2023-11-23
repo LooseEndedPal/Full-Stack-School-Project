@@ -1,5 +1,6 @@
 # Mini-Project-8
-This branch is for mini-project-8 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and npm start.
+This branch is for mini-project-8 to run. Clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and nodemon index.js.
+
 Required installation:
 - Node.js
 - Express
@@ -25,5 +26,5 @@ Changed all MongoDB features to Mongoose Features, Changed variables and path na
 2. Run git bash at the backend directory
 3. Type nodemon index.js in bash
 
-## Badges
+# Badges
 <a href="https://codeclimate.com/github/LooseEndedPal/Modern-Web-Technologies-Archive/maintainability"><img src="https://api.codeclimate.com/v1/badges/7423b9e695feed0888a7/maintainability" /></a>

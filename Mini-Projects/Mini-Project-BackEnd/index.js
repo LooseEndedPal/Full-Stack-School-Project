@@ -1,6 +1,7 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
-import methodOverride from 'method-override'
+import methodOverride from 'method-override';
+import mongoose from 'mongoose';
 
 const uri = "mongodb://0.0.0.0:27017/";
 const app = express();
@@ -12,25 +13,18 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.set('view engine', 'ejs');
 
-const shoppingList = [
-    { id: 1, name: 'Pasta', quantity: 1 },
-    { id: 2, name: 'Apples', quantity: 1 },
-    { id: 3, name: 'Crab', quantity: 1 },
-    { id: 4, name: 'Orange Juice', quantity: 1 },
-];
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Connected to mongoose"))
+    .catch(() => console.log("Cannot connect due to this error: "));
 
-(async function () {
-    console.log("It happened");
-    try {
-        console.log("I happened");
-        const client = await MongoClient.connect(uri);
-        console.log('Connected to MongoDB.');
-        db = client.db("fitnessTracker");
+const postSchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    likes: Number,
+    dislikes: Number,
+});
 
-    } catch (err) {
-        console.error('Error occurred while connecting to MongoDB:', err);
-    }
-})();
+const Posts = mongoose.model('Posts', postSchema);
 
 app.use((req, res, next) => {
     next()
@@ -45,15 +39,14 @@ app.get('/add', (req, res) => {
 })
 
 async function timer(params, req, res) {
-    let results = await lol(params, req, res);
+    let results = await changeRender(params, req, res);
 }
 
-const lol = async function (params, req, res) {
+const changeRender = async function (params, req, res) {
 
     try {
 
-        const collection = db.collection('posts');
-        const posts = await collection.find({}).toArray();
+        const posts = await Posts.find();
         setTimeout(() => {
             console.log(res);
             if (params == 1) {
@@ -75,77 +68,68 @@ const lol = async function (params, req, res) {
 }
 
 
-app.post('/api/shoppingList/increaseQuantity/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const index = shoppingList.findIndex(x => x.id === id);
+app.post('/api/posts/like/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log("Id is equal to", id);
+        const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
+        console.log("New post: ", updatedItem);
 
-    shoppingList[index].quantity += 1;
-
-    res.redirect('/')
-
-})
-
-app.post('/api/shoppingList/decreaseQuantity/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const index = shoppingList.findIndex(x => x.id === id);
-
-    posts.likes -= 1;
-
-    if (shoppingList[index].quantity <= 0) {
-
-        if (index !== -1) {
-            shoppingList.splice(index, 1);
-            res.redirect('/');
-        }
-        else {
-            res.status(404).send(`${itemId} not found.`)
-        }
-    }
-
-    res.redirect('/')
-
-})
-
-app.post('/api/posts/delete/:id', (req, res) => {
-
-    const itemId = parseInt(req.params.id);
-    //const index = shoppingList.findIndex(x => x.id === itemId);
-    const collection = db.collection('posts');
-    console.log(req.params.id);
-    res.redirect('/');
-    //const collection = db.collection('posts');
-    //console.log("I happened");
-    //collection.remove()
-
-    /*if (index !== -1) {
-        shoppingList.splice(index, 1);
         res.redirect('/');
     }
-    else {
-        res.status(404).send(`${itemId} not found.`)
-    }*/
+    catch (err) {
+        console.log(err);
+    }
+
 })
 
-app.post('/api/add', (req, res) => {
+app.post('/api/posts/dislike/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log("Id is equal to", id);
+        const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { dislikes: 1 } });
+        console.log("New post: ", updatedItem);
 
-    console.log(req.body.name);
+        res.redirect('/');
+    }
+    catch (err) {
+        console.log(err);
+    }
 
-    const newItem = {
-        name: req.body.name,
-        likes: 0,
-        dislike: 0,
-    };
+})
 
-    const collection = db.collection('posts');
-    collection.insertOne(newItem, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send("Error posting");
-            return;
-        }
-        console.log("Post uploaded")
-    })
+app.post('/api/posts/delete/:id', async (req, res) => {
+    const id = req.params.id;
+
+    const removedItem = await Posts.findByIdAndDelete(id);
+
     res.redirect('/');
+})
+
+app.post('/api/add', async (req, res) => {
+
+    console.log(req.body);
+
+    try {
+
+        const { name, description } = req.body;
+
+        const newItem = new Posts({
+            name,
+            description,
+            likes: 0,
+            dislikes: 0,
+        });
+
+        const result = await newItem.save();
+        console.log("Saved to database ", result);
+        res.redirect('/');
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send('Error saving');
+    }
+
 })
 
 

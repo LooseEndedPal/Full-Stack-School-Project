@@ -1,22 +1,60 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
 import methodOverride from 'method-override';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import bcrypt from 'bcryptjs';
+import session from 'express-session';
+import 'dotenv/config';
 
 const uri = "mongodb://0.0.0.0:27017/";
 const app = express();
-const port = 3000;
-let db;
+const port = 3001;
+
+console.log(process.env.secret);
 
 app.use(methodOverride('override'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.set('view engine', 'ejs');
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to mongoose"))
     .catch(() => console.log("Cannot connect due to this error: "));
 
+
+passport.use(new LocalStrategy(
+    async (username, password, done) => {
+        const user = await User.findOne({ username: username });
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            return done(null, false, { message: 'Incorrect username or password.' });
+        }
+        return done(null, user);
+    }
+));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err);
+    }
+});
+ 
 const postSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -24,6 +62,12 @@ const postSchema = new mongoose.Schema({
     dislikes: Number,
 });
 
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String
+});
+
+const User = mongoose.model('User', userSchema);
 const Posts = mongoose.model('Posts', postSchema);
 
 app.use((req, res, next) => {
@@ -37,6 +81,27 @@ app.get('/', (req, res) => {
 app.get('/add', (req, res) => {
     timer(1, req, res);
 })
+
+app.get('/api/check', async(req, res) =>{
+    const posts = await Posts.find();
+    console.log("It works");
+    res.json(posts);
+})
+
+app.get('/register', (req, res) => {
+    timer(3, req, res);
+});
+
+app.get('/login', (req, res) => {
+    timer(4, req, res);
+});
+
+app.get('/logout', (req, res) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+});
 
 async function timer(params, req, res) {
     let results = await changeRender(params, req, res);
@@ -52,8 +117,14 @@ const changeRender = async function (params, req, res) {
             if (params == 1) {
                 res.render('updateList.ejs');
             }
-            else if (params) {
-                res.render("shoppingList.ejs", { posts });
+            else if (params == 2) {
+                res.render("postList.ejs", { posts });
+            }
+            else if(params == 3){
+                res.render('register.ejs');
+            }
+            else if(params == 4){
+                res.render('login.ejs');
             }
             else {
                 res.status(404).send("Invalid button clicked");
@@ -132,6 +203,21 @@ app.post('/api/add', async (req, res) => {
 
 })
 
+app.post('/register', async (req, res) => {
+    try {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        const newUser = new User({ username: req.body.username, password: hashedPassword });
+        await newUser.save();
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.redirect('/register');
+    }
+});
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/');
+});
 
 app.listen(port, () => {
     console.log(`Its running on port ${port}`);

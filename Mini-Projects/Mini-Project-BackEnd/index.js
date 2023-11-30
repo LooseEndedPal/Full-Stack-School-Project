@@ -7,11 +7,13 @@ import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import 'dotenv/config';
 
-const uri = "mongodb://0.0.0.0:27017/";
+
+const uri = process.env.DATABASE;
 const app = express();
 const port = 3001;
 
 console.log(process.env.secret);
+console.log(process.env.DATABASE);
 
 app.use(methodOverride('override'));
 app.use(express.json());
@@ -74,12 +76,13 @@ app.use((req, res, next) => {
     next()
 })
 
-app.get('/', (req, res) => {
-    timer(2, req, res);
+app.get('/', async (req, res) => {
+    const posts = await Posts.find();
+    res.render("postList.ejs", { posts });
 })
 
 app.get('/add', (req, res) => {
-    timer(1, req, res);
+    res.render('updateList.ejs');
 })
 
 app.get('/api/check', async(req, res) =>{
@@ -89,11 +92,11 @@ app.get('/api/check', async(req, res) =>{
 })
 
 app.get('/register', (req, res) => {
-    timer(3, req, res);
+    res.render('register.ejs');
 });
 
 app.get('/login', (req, res) => {
-    timer(4, req, res);
+    res.render('login.ejs');
 });
 
 app.get('/logout', (req, res) => {
@@ -102,10 +105,6 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
-
-async function timer(params, req, res) {
-    let results = await changeRender(params, req, res);
-}
 
 const changeRender = async function (params, req, res) {
 

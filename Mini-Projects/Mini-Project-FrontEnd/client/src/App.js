@@ -11,10 +11,10 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState("");
 
-
+  const endPoint = "https://mini-project-vp38.onrender.com"
 
   useEffect(() =>{
-    fetch('/api/check')
+    fetch(`${endPoint}/api/check`)
     .then((res) => res.json())
     .then((data) => {
       setPosts(data)

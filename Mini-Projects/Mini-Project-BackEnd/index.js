@@ -7,6 +7,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import 'dotenv/config';
+import cors from 'cors';
 
 //Constant Variables
 const uri = process.env.DATABASE;
@@ -14,6 +15,7 @@ const app = express();
 const port = 3001;
 
 //Use Statements
+app.use(cors());
 app.use(methodOverride('override'));
 app.use(express.json());
 app.use(express.urlencoded());

@@ -1,40 +1,23 @@
 import { React, useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-//import {Home, Layout, Login, Update, Register} from './pages'
+import {Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Layout from './pages/layout'
 import Login from './pages/login';
+import Update from './pages/update';
+import Register from './pages/register';
 
 function App() {
-
-
-  const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState("");
-
-  const endPoint = "https://mini-project-vp38.onrender.com"
-
-  useEffect(() =>{
-    fetch(`${endPoint}/api/check`)
-    .then((res) => res.json())
-    .then((data) => {
-      setPosts(data)
-      console.log(data)
-    })
-    console.log("It worked");
-  }, [])
-
 
   return (
     <div>
       <h1>Welcome to BackBook</h1>
 
-      {posts.map((post) =>
-        <div>Post {post.name} &emsp;&emsp;&emsp;Likes: {post.likes}Disikes: {post.dislikes} <br/>{post.name}<br/></div>
-      )}
       <Layout/>
       <Routes>
-        <Route index element={<Home />}></Route>
+        <Route path='/' element={<Home />}></Route>
         <Route path='/login' element={<Login />}></Route>
+        <Route path='/register' element={<Register />}></Route>
+        <Route path='/add' element={<Update />}></Route>
       </Routes>
     </div>
   )

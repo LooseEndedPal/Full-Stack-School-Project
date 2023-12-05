@@ -10,7 +10,7 @@ function Login() {
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
             </form>
-            <a href="/register">Register</a>
+            <a href="/register">Not Registered? Register</a>
             <form action="/">
                 <button type="submit">Back</button>
             </form>

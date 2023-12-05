@@ -1,3 +1,4 @@
+//Imports
 import express from 'express';
 import methodOverride from 'method-override';
 import mongoose from 'mongoose';
@@ -7,14 +8,12 @@ import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import 'dotenv/config';
 
-
+//Constant Variables
 const uri = process.env.DATABASE;
 const app = express();
 const port = 3001;
 
-console.log(process.env.secret);
-console.log(process.env.DATABASE);
-
+//Use Statements
 app.use(methodOverride('override'));
 app.use(express.json());
 app.use(express.urlencoded());
@@ -28,10 +27,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
+//Database and Passport Initializations
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to mongoose"))
-    .catch(() => console.log("Cannot connect due to this error: "));
+    .catch(() => console.log("Cannot connect due to some error or you forgot to change your IP address cause your in a different location. Go on your mongoDB atlus right now and change it you idiot"));
 
 
 passport.use(new LocalStrategy(
@@ -44,6 +43,7 @@ passport.use(new LocalStrategy(
     }
 ));
 
+//Passport serializations and deserializations
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
@@ -56,7 +56,8 @@ passport.deserializeUser(async (id, done) => {
         done(err);
     }
 });
- 
+
+//Database Schemas
 const postSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -72,80 +73,34 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Posts = mongoose.model('Posts', postSchema);
 
+
+//Middleware
 app.use((req, res, next) => {
     next()
 })
 
-app.get('/', async (req, res) => {
+//Get requests
+app.get('/api/getList', async (req, res) => {
     const posts = await Posts.find();
-    res.render("postList.ejs", { posts });
-})
-
-app.get('/add', (req, res) => {
-    res.render('updateList.ejs');
-})
-
-app.get('/api/check', async(req, res) =>{
-    const posts = await Posts.find();
-    console.log("It works");
+    console.log("Ping");
     res.json(posts);
 })
 
-app.get('/register', (req, res) => {
-    res.render('register.ejs');
-});
 
-app.get('/login', (req, res) => {
-    res.render('login.ejs');
-});
-
-app.get('/logout', (req, res) => {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-    });
-});
-
-const changeRender = async function (params, req, res) {
-
-    try {
-
-        const posts = await Posts.find();
-        setTimeout(() => {
-            console.log(res);
-            if (params == 1) {
-                res.render('updateList.ejs');
-            }
-            else if (params == 2) {
-                res.render("postList.ejs", { posts });
-            }
-            else if(params == 3){
-                res.render('register.ejs');
-            }
-            else if(params == 4){
-                res.render('login.ejs');
-            }
-            else {
-                res.status(404).send("Invalid button clicked");
-            }
-        }, 1000);
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send(err);
-        res.render('updateList.ejs');
-    }
-}
+app.get('/api/getUser', (req, res) => {
+    res.json({ user: req.user })
+})
 
 
-app.post('/api/posts/like/:id', async (req, res) => {
+//Database posts
+app.get('/api/posts/like/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
         console.log("New post: ", updatedItem);
-
-        res.redirect('/');
+        res.json({})
+        //res.redirect('/');
     }
     catch (err) {
         console.log(err);
@@ -183,6 +138,8 @@ app.post('/api/add', async (req, res) => {
     try {
 
         const { name, description } = req.body;
+        console.log(name);
+        console.log(description);
 
         const newItem = new Posts({
             name,
@@ -202,6 +159,7 @@ app.post('/api/add', async (req, res) => {
 
 })
 
+//Passport post requests
 app.post('/register', async (req, res) => {
     try {
         const hashedPassword = bcrypt.hashSync(req.body.password, 10);
@@ -218,6 +176,14 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login' })
     res.redirect('/');
 });
 
+app.get('/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+});
+
+//Listening
 app.listen(port, () => {
     console.log(`Its running on port ${port}`);
 })

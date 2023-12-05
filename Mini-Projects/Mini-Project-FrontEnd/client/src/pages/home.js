@@ -4,9 +4,9 @@ function Home() {
 
     const [posts, setPosts] = useState([]);
     const [refresh, setRefresh] = useState(0);
-    //const endPoint = "https://mini-project-vp38.onrender.com"
+    const endPoint = "https://mini-project-vp38.onrender.com"
     const likeClickHandler = (id) => {
-        fetch(`/api/posts/like/${id}`).then(x => x.json()).then(() => {
+        fetch(`${endPoint}/api/posts/like/${id}`).then(x => x.json()).then(() => {
             setRefresh(refresh+1);
         })
     }

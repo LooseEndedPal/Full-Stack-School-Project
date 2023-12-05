@@ -148,6 +148,8 @@ app.post('/api/add', async (req, res) => {
             dislikes: 0,
         });
 
+        console.log(newItem);
+
         const result = await newItem.save();
         console.log("Saved to database ", result);
         res.redirect('/');

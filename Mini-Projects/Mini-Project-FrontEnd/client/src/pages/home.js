@@ -11,7 +11,7 @@ function Home() {
         })
     }
     useEffect(() => {
-        fetch(`${endPoint}/api/getList`)
+        fetch(`${endPoint}/api/getList`, {mode: 'cors'})
             .then((res) => res.json())
             .then((data) => {
                 setPosts(data)

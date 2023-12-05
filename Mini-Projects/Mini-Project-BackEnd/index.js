@@ -30,7 +30,7 @@ app.use(passport.session());
 
 
 //Database and Passport Initializations
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri)
     .then(() => console.log("Connected to mongoose"))
     .catch(() => console.log("Cannot connect due to some error or you forgot to change your IP address cause your in a different location. Go on your mongoDB atlus right now and change it you idiot"));
 

@@ -152,7 +152,7 @@ app.post('/api/add', async (req, res) => {
 
         const result = await newItem.save();
         console.log("Saved to database ", result);
-        res.redirect('/');
+        res.status(200).redirect('/');
     }
     catch (err) {
         console.log(err);

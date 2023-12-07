@@ -34,7 +34,7 @@ function Home() {
                     <p>Likes: {posts.likes} </p>
                     <p>Dislikes: {posts.dislikes}</p>
                     <button onClick={()=>likeClickHandler(posts._id)}>Like</button>
-                    <form action={`/api/posts/like/${posts._id}`} onSubmit={(e) => e.preventDefault} method="GET">
+                    <form action={`/api/posts/like/${posts._id}`} onSubmit={(e) => e.preventDefault} method="POST">
                         <button type="submit">Like</button>
                     </form>
 

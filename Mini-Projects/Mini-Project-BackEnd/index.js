@@ -99,8 +99,7 @@ app.post('/api/posts/like/:id', async (req, res) => {
         console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
         console.log("New post: ", updatedItem);
-        res.json({})
-        //res.redirect('/');
+        res.status(200)
     }
     catch (err) {
         console.log(err);

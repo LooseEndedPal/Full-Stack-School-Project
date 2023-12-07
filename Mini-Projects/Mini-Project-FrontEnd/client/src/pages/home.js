@@ -6,12 +6,12 @@ function Home() {
     const [refresh, setRefresh] = useState(0);
     const endPoint = "https://mini-project-vp38.onrender.com"
     const likeClickHandler = (id) => {
-        fetch(`/api/posts/like/${id}`).then(x => x.json()).then(() => {
+        fetch(`${endPoint}/api/posts/like/${id}`).then(x => x.json()).then(() => {
             setRefresh(refresh+1);
         })
     }
     useEffect(() => {
-        fetch(`/api/getList`)
+        fetch(`${endPoint}/api/getList`)
             .then((res) => res.json())
             .then((data) => {
                 setPosts(data)
@@ -35,15 +35,15 @@ function Home() {
                     <p>Likes: {posts.likes} </p>
                     <p>Dislikes: {posts.dislikes}</p>
                     <button onClick={()=>likeClickHandler(posts._id)}>Like</button>
-                    <form action={`/api/posts/like/${posts._id}`} method="POST">
+                    <form action={`${endPoint}/api/posts/like/${posts._id}`} method="POST">
                         <button type="submit">Like</button>
                     </form>
 
-                    <form action={`/api/posts/dislike/${posts._id}`} method="POST">
+                    <form action={`${endPoint}/api/posts/dislike/${posts._id}`} method="POST">
                         <button type="submit">Dislike</button>
                     </form>
 
-                    <form action={`/api/posts/delete/${posts._id}`} method="POST">
+                    <form action={`${endPoint}/api/posts/delete/${posts._id}`} method="POST">
                         <input type="hidden" name="_method" value="DELETE" />
                         <button>Delete {posts.name}</button>
                     </form>

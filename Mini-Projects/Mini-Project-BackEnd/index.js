@@ -30,9 +30,7 @@ app.use(passport.session());
 
 
 //Database and Passport Initializations
-mongoose.connect(uri)
-    .then(() => console.log("Connected to mongoose"))
-    .catch(() => console.log("Cannot connect due to some error or you forgot to change your IP address cause your in a different location. Go on your mongoDB atlus right now and change it you idiot"));
+mongoose.connect(uri).then(() => console.log("It connected")).catch(err =>console.log(err));
 
 
 passport.use(new LocalStrategy(
@@ -137,7 +135,7 @@ app.post('/api/add', async (req, res) => {
 
     console.log(req.body);
 
-    try {
+    try{
 
         const { name, description } = req.body;
         console.log(name);

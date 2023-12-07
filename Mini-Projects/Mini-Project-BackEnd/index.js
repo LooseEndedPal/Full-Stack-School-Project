@@ -93,7 +93,7 @@ app.get('/api/getUser', (req, res) => {
 
 
 //Database posts
-app.get('/api/posts/like/:id', async (req, res) => {
+app.post('/api/posts/like/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);

@@ -92,8 +92,8 @@ app.get('/api/getUser', (req, res) => {
 })
 
 
-//Database posts
-app.post('/api/posts/like/:id', async (req, res) => {
+//Database
+app.get('/api/posts/like/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);
@@ -107,14 +107,14 @@ app.post('/api/posts/like/:id', async (req, res) => {
 
 })
 
-app.post('/api/posts/dislike/:id', async (req, res) => {
+app.get('/api/posts/dislike/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { dislikes: 1 } });
         console.log("New post: ", updatedItem);
 
-        res.redirect('/');
+        res.status(200);
     }
     catch (err) {
         console.log(err);
@@ -122,12 +122,12 @@ app.post('/api/posts/dislike/:id', async (req, res) => {
 
 })
 
-app.post('/api/posts/delete/:id', async (req, res) => {
+app.get('/api/posts/delete/:id', async (req, res) => {
     const id = req.params.id;
 
     const removedItem = await Posts.findByIdAndDelete(id);
 
-    res.redirect('/');
+    res.status(200);
 })
 
 app.post('/api/add', async (req, res) => {

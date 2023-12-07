@@ -99,7 +99,7 @@ app.get('/api/posts/like/:id', async (req, res) => {
         console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
         console.log("New post: ", updatedItem);
-        res.status(200)
+        res.json({});
     }
     catch (err) {
         console.log(err);
@@ -114,7 +114,7 @@ app.get('/api/posts/dislike/:id', async (req, res) => {
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { dislikes: 1 } });
         console.log("New post: ", updatedItem);
 
-        res.status(200);
+        res.json({});
     }
     catch (err) {
         console.log(err);
@@ -122,12 +122,12 @@ app.get('/api/posts/dislike/:id', async (req, res) => {
 
 })
 
-app.get('/api/posts/delete/:id', async (req, res) => {
+app.post('/api/posts/delete/:id', async (req, res) => {
     const id = req.params.id;
 
     const removedItem = await Posts.findByIdAndDelete(id);
 
-    res.status(200);
+    res.redirect('/');
 })
 
 app.post('/api/add', async (req, res) => {

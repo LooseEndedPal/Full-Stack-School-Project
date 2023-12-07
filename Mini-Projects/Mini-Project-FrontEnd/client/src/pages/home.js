@@ -5,16 +5,11 @@ function Home() {
     const [posts, setPosts] = useState([]);
     const [refresh, setRefresh] = useState(0);
     const clickHandler = (id) => {
-        fetch(`/api/posts/like/${id}`)
-        .then(() =>{
-            console.log("It happeed")
-            setRefresh(refresh + 1);
+        fetch(`/api/posts/like/${id}`).then(x => x.json()).then(() => {
+            setRefresh(refresh+1);
         })
     }
 
-    const likeHandle = (e) =>{
-        e.preventDefault();
-    }
     useEffect(() => {
         fetch(`/api/getList`)
             .then((res) => res.json())

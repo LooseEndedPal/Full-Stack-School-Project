@@ -1,7 +1,7 @@
 function Logout() {
     return (
         <div>
-            <form action={`/logout`} method="GET">
+            <form action={`/logout`} method="POST">
                 <h2>Would you like to logout?</h2>
                 <button>Yes</button>
             </form>

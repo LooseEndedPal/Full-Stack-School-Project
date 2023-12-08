@@ -10,10 +10,6 @@ function Home() {
         })
     }
 
-    const test = () =>{
-        fetch('/api/getUser').then((res) => res.json()).then((json) => console.log(json));
-    }
-
     useEffect(() => {
         fetch(`/api/getList`)
             .then((res) => res.json())
@@ -44,7 +40,6 @@ function Home() {
                         <input type="hidden" name="_method" value="DELETE" />
                         <button>Delete {posts.name}</button>
                     </form>
-                    <button onClick={test}>test</button>
                 </div>
             ))}
             <form action= {`/add`}>

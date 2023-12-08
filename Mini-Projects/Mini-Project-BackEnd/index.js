@@ -96,9 +96,7 @@ app.get('/api/getUser', (req, res) => {
 app.get('/api/posts/like/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
-        console.log("New post: ", updatedItem);
         res.json({});
     }
     catch (err) {
@@ -137,8 +135,6 @@ app.post('/api/add', async (req, res) => {
     try{
 
         const { name, description } = req.body;
-        console.log(name);
-        console.log(description);
 
         const newItem = new Posts({
             name,
@@ -146,8 +142,6 @@ app.post('/api/add', async (req, res) => {
             likes: 0,
             dislikes: 0,
         });
-
-        console.log(newItem);
 
         const result = await newItem.save();
         console.log("Saved to database ", result);
@@ -180,10 +174,8 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login' })
 app.post('/logout', (req, res) => {
     req.logout(function (err) {
         if (err) {
-            console.log(err)
             return next(err);
         }
-        console.log("I happened");
         res.redirect('/');
     });
 });

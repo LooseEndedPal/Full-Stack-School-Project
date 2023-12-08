@@ -4,10 +4,14 @@ function Home() {
 
     const [posts, setPosts] = useState([]);
     const [refresh, setRefresh] = useState(0);
-    const clickHandler = (id) => {
-        fetch(`/api/posts/like/${id}`).then(x => x.json()).then(() => {
+    const clickHandler = (id, type) => {
+        fetch(`/api/posts/${type}/${id}`).then(x => x.json()).then(() => {
             setRefresh(refresh+1);
         })
+    }
+
+    const test = () =>{
+        fetch('/api/getUser').then((res) => res.json()).then((json) => console.log(json));
     }
 
     useEffect(() => {
@@ -34,19 +38,13 @@ function Home() {
                     <p>{posts.description} </p>
                     <p>Likes: {posts.likes} </p>
                     <p>Dislikes: {posts.dislikes}</p>
-                    <button onClick={()=>clickHandler(posts._id)}>Like</button>
-                    <form action={`/api/posts/like/${posts._id}`} method="POST">
-                        <button type="submit">Like</button>
-                    </form>
-
-                    <form action={`/api/posts/dislike/${posts._id}`} onSubmit={(e) => e.preventDefault} method="POST">
-                        <button type="submit">Dislike</button>
-                    </form>
-
+                    <button onClick={()=>clickHandler(posts._id, "like")}>Like</button>
+                    <button onClick={()=>clickHandler(posts._id, "dislike")}>Dislike</button>
                     <form action={`/api/posts/delete/${posts._id}`} method="POST">
                         <input type="hidden" name="_method" value="DELETE" />
                         <button>Delete {posts.name}</button>
                     </form>
+                    <button onClick={test}>test</button>
                 </div>
             ))}
             <form action= {`/add`}>

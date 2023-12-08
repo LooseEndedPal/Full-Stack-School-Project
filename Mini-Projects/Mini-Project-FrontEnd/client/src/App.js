@@ -5,6 +5,7 @@ import Layout from './pages/layout'
 import Login from './pages/login';
 import Update from './pages/update';
 import Register from './pages/register';
+import Logout from './pages/logout';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/login' element={<Login />}></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/add' element={<Update />}></Route>
+        <Route path='/logout' element={<Logout />}></Route>
       </Routes>
     </div>
   )

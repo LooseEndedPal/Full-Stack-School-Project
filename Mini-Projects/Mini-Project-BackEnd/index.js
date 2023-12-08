@@ -1,22 +1,63 @@
+//Imports
 import express from 'express';
-import { MongoClient } from 'mongodb';
 import methodOverride from 'method-override';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import bcrypt from 'bcryptjs';
+import session from 'express-session';
+import 'dotenv/config';
+import cors from 'cors';
 
-const uri = "mongodb://0.0.0.0:27017/";
+//Constant Variables
+const uri = process.env.DATABASE;
 const app = express();
-const port = 3000;
-let db;
+const port = 3001;
 
+//Use Statements
+app.use(cors());
 app.use(methodOverride('override'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.set('view engine', 'ejs');
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Connected to mongoose"))
-    .catch(() => console.log("Cannot connect due to this error: "));
 
+//Database and Passport Initializations
+mongoose.connect(uri).then(() => console.log("It connected")).catch(err =>console.log(err));
+
+
+passport.use(new LocalStrategy(
+    async (username, password, done) => {
+        const user = await User.findOne({ username: username });
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            return done(null, false, { message: 'Incorrect username or password.' });
+        }
+        return done(null, user);
+    }
+));
+
+//Passport serializations and deserializations
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err);
+    }
+});
+
+//Database Schemas
 const postSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -24,58 +65,39 @@ const postSchema = new mongoose.Schema({
     dislikes: Number,
 });
 
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String
+});
+
+const User = mongoose.model('User', userSchema);
 const Posts = mongoose.model('Posts', postSchema);
 
+
+//Middleware
 app.use((req, res, next) => {
     next()
 })
 
-app.get('/', (req, res) => {
-    timer(2, req, res);
+//Get requests
+app.get('/api/getList', async (req, res) => {
+    const posts = await Posts.find();
+    console.log("Ping");
+    res.json(posts);
 })
 
-app.get('/add', (req, res) => {
-    timer(1, req, res);
+
+app.get('/api/getUser', (req, res) => {
+    res.json({ user: req.user })
 })
 
-async function timer(params, req, res) {
-    let results = await changeRender(params, req, res);
-}
 
-const changeRender = async function (params, req, res) {
-
-    try {
-
-        const posts = await Posts.find();
-        setTimeout(() => {
-            console.log(res);
-            if (params == 1) {
-                res.render('updateList.ejs');
-            }
-            else if (params) {
-                res.render("shoppingList.ejs", { posts });
-            }
-            else {
-                res.status(404).send("Invalid button clicked");
-            }
-        }, 1000);
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send(err);
-        res.render('updateList.ejs');
-    }
-}
-
-
-app.post('/api/posts/like/:id', async (req, res) => {
+//Database
+app.get('/api/posts/like/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
-        console.log("New post: ", updatedItem);
-
-        res.redirect('/');
+        res.json({});
     }
     catch (err) {
         console.log(err);
@@ -83,14 +105,14 @@ app.post('/api/posts/like/:id', async (req, res) => {
 
 })
 
-app.post('/api/posts/dislike/:id', async (req, res) => {
+app.get('/api/posts/dislike/:id', async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { dislikes: 1 } });
         console.log("New post: ", updatedItem);
 
-        res.redirect('/');
+        res.json({});
     }
     catch (err) {
         console.log(err);
@@ -110,7 +132,7 @@ app.post('/api/add', async (req, res) => {
 
     console.log(req.body);
 
-    try {
+    try{
 
         const { name, description } = req.body;
 
@@ -123,7 +145,7 @@ app.post('/api/add', async (req, res) => {
 
         const result = await newItem.save();
         console.log("Saved to database ", result);
-        res.redirect('/');
+        res.status(200).redirect('/');
     }
     catch (err) {
         console.log(err);
@@ -132,7 +154,33 @@ app.post('/api/add', async (req, res) => {
 
 })
 
+//Passport post requests
+app.post('/register', async (req, res) => {
+    try {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        const newUser = new User({ username: req.body.username, password: hashedPassword });
+        await newUser.save();
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.redirect('/register');
+    }
+});
 
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/');
+});
+
+app.post('/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+});
+
+//Listening
 app.listen(port, () => {
     console.log(`Its running on port ${port}`);
 })

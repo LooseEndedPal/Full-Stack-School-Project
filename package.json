@@ -3,5 +3,8 @@
     "install": "^0.13.0",
     "mongoose": "^8.0.1",
     "vercel": "^32.5.0"
+  },
+  "devDependencies": {
+    "react-router-dom": "^6.20.0"
   }
 }

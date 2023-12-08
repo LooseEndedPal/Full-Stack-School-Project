@@ -183,6 +183,7 @@ app.post('/logout', (req, res) => {
             console.log(err)
             return next(err);
         }
+        console.log("I happened");
         res.redirect('/');
     });
 });

@@ -1,5 +1,6 @@
 # Mini-Project-9
 This branch is for mini-project-9. To run, clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and frontend and run both through and npm run start and nodemon index.js.
+
 Required installation:
 - Node.js
 - Express
@@ -51,5 +52,5 @@ None
 2. Run git bash at the backend directory and frontenddirectory
 3. Type nodemon index.js and npm run start in bash
 
-## Badges
+# Badges
 <a href="https://codeclimate.com/github/LooseEndedPal/Modern-Web-Technologies-Archive/maintainability"><img src="https://api.codeclimate.com/v1/badges/7423b9e695feed0888a7/maintainability" /></a>

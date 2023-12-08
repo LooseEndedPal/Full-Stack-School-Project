@@ -5,9 +5,14 @@ function Layout() {
     const [user, newUser] = useState();
 
     useEffect(() =>{
-        fetch('/api/getUser').then((res) => res.json()).then((json) => {
+        fetch('/api/getUser')
+        .then((res) => res.json())
+        .then((json) => {
             newUser(json.user.username);
             console.log(user);
+        })
+        .catch(() =>{
+            newUser(null);
         });
     }, [])
 
@@ -26,7 +31,7 @@ function Layout() {
                     <li><Link to = '/register'>Register</Link></li>
                 </ul>
             </nav>
-                        
+
         </div>
     );
 }

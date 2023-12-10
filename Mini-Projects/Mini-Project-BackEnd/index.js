@@ -111,7 +111,7 @@ const verifyToken = (req, res, next) => {
   
 
 //Get requests
-app.get('/api/getList', verifyToken, async (req, res) => {
+app.get('/api/getList', async (req, res) => {
     try {
         const posts = await Posts.find();
         console.log("Ping");

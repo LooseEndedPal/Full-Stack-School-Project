@@ -98,8 +98,9 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, process.env.SECRET);
+        const verified = jwt.verify(token, jwtToken);
         req.user = verified;
+        console.log("I went through")
         next();
     }
     catch (err) {
@@ -111,9 +112,13 @@ const verifyToken = (req, res, next) => {
 
 //Get requests
 app.get('/api/getList', verifyToken, async (req, res) => {
-    const posts = await Posts.find();
-    console.log("Ping");
-    res.json(posts);
+    try {
+        const posts = await Posts.find();
+        console.log("Ping");
+        res.json(posts);
+    } catch (error) {
+        res.status(400)("Error because of: ", error);   
+    }
 })
 
 

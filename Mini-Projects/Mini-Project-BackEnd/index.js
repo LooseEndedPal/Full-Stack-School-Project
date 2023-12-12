@@ -89,7 +89,7 @@ const ensureAuthenticated = (req, res, next) => {
     }
   };
 
-const verifyToken = (req, res, next) => {
+/*const verifyToken = (req, res, next) => {
     console.log(req);
     const token = req.header('Authorization')?.split(' ')[1] || sessionStorage.getItem('token') ;
 
@@ -106,7 +106,7 @@ const verifyToken = (req, res, next) => {
     catch (err) {
         res.status(400).send('Invalid Token');
     }
-};
+};*/
 
   
 

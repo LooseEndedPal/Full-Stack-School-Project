@@ -118,6 +118,7 @@ app.get('/api/getList', async (req, res) => {
         console.log(posts)
         res.json(posts);
     } catch (error) {
+        console.log("I am connected but....")
         res.status(400)("Error because of: ", error);   
     }
 })

@@ -106,13 +106,7 @@ const ensureAuthenticated = (req, res, next) => {
     catch (err) {
         res.status(400).send('Invalid Token');
     }
-};*/
-
-app.get('/api/connected', async (req, res) => {
-    console.log("Ping");
-    res.json({});
-})
-  
+};*/  
 
 //Get requests
 app.get('/api/getList', async (req, res) => {

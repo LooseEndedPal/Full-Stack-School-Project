@@ -2,10 +2,11 @@ import {Link} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 function Layout() {
+    const link = 'https://mini-project-vp38.onrender.com'
     const [user, newUser] = useState();
 
     useEffect(() =>{
-        fetch('/api/getUser')
+        fetch(`${link}/api/getUser`)
         .then((res) => res.json())
         .then((json) => {
             newUser(json.user.username);

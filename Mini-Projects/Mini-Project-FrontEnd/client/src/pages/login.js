@@ -1,11 +1,12 @@
 function Login() {
+    const link = 'https://mini-project-vp38.onrender.com'
     return (
         <div>
             <head>
                 <title>Login</title>
             </head>
             <h2>Login</h2>
-            <form action="/login" method="POST">
+            <form action={`${link}/login`} method="POST">
                 <input type="text" name="username" placeholder="Username" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>

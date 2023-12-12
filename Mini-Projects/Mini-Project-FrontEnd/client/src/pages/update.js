@@ -1,10 +1,10 @@
 function Update() {
-
+    const link = 'https://mini-project-vp38.onrender.com'
     return (
         <div>
             <h1>Add new Post</h1>
 
-            <form action={`/api/add`} method="POST" class="form-example">
+            <form action={`${link}/api/add`} method="POST" class="form-example">
                 <label for="name">Name of Post: </label>
                 <input type="text" name="name" id="name" required />
                 <label for="name">Description: </label>

@@ -115,6 +115,7 @@ app.get('/api/getList', async (req, res) => {
     try {
         const posts = await Posts.find();
         console.log("Ping");
+        console.log(posts)
         res.json(posts);
     } catch (error) {
         res.status(400)("Error because of: ", error);   

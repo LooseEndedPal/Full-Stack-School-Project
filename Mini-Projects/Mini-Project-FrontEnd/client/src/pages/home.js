@@ -12,7 +12,7 @@ function Home() {
     }
 
     useEffect(() => {
-        fetch(`${link}/api/getList`)
+        fetch(`$/api/getList`)
             .then((res) => res.json())
             .then((data) => {
                 setPosts(data)

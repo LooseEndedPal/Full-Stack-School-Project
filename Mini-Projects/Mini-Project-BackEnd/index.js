@@ -114,7 +114,8 @@ app.get('/api/getList', cors(), async (req, res) => {
         const posts = await Posts.find();
         console.log("Ping");
         console.log(posts)
-        res.json(posts);
+        //res.json(posts);
+        res.json({Hey: "I work"})
     } catch (error) {
         console.log("I am connected but....")
         res.status(400)("Error because of: ", error);   

@@ -4,8 +4,9 @@ function Home() {
 
     const [posts, setPosts] = useState([]);
     const [refresh, setRefresh] = useState(0);
+    const link = 'https://mini-project-vp38.onrender.com'
     const clickHandler = (id, type) => {
-        fetch(`/api/posts/${type}/${id}`).then(x => x.json()).then(() => {
+        fetch(`${link}/api/posts/${type}/${id}`).then(x => x.json()).then(() => {
             setRefresh(refresh+1);
         })
     }

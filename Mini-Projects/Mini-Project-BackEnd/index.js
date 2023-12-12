@@ -108,6 +108,10 @@ const ensureAuthenticated = (req, res, next) => {
     }
 };*/
 
+app.get('/api/connected', async (req, res) => {
+    console.log("Ping");
+    res.json({});
+})
   
 
 //Get requests

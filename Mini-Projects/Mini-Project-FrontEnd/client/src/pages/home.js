@@ -11,8 +11,17 @@ function Home() {
         })
     }
 
+    const connected = () =>{
+        fetch(`${link}/api/connected`).then(x => x.json()).then(() => {
+            console.log("Pong")
+        })
+        .catch((err) =>{
+            console.log("I had an error")
+        })
+    }
+
     useEffect(() => {
-        fetch(`/api/getList`)
+        fetch(`${link}/api/getList`)
             .then((res) => res.json())
             .then((data) => {
                 setPosts(data)
@@ -43,6 +52,7 @@ function Home() {
                     </form>
                 </div>
             ))}
+            <button onClick={connected}>Am I connected?</button>
             <form action= {`/add`}>
                 <button type="submit">Add item</button>
             </form>

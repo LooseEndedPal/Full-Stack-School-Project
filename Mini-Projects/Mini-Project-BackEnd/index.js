@@ -8,9 +8,11 @@ import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import 'dotenv/config';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 //Constant Variables
 const uri = process.env.DATABASE;
+const jwtToken = process.env.TOKEN;
 const app = express();
 const port = 3001;
 
@@ -79,11 +81,44 @@ app.use((req, res, next) => {
     next()
 })
 
+const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    } else {
+      res.redirect('/login');
+    }
+  };
+
+/*const verifyToken = (req, res, next) => {
+    console.log(req);
+    const token = req.header('Authorization')?.split(' ')[1] || sessionStorage.getItem('token') ;
+
+    if (!token) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const verified = jwt.verify(token, jwtToken);
+        req.user = verified;
+        console.log("I went through")
+        next();
+    }
+    catch (err) {
+        res.status(400).send('Invalid Token');
+    }
+};*/
+
+  
+
 //Get requests
 app.get('/api/getList', async (req, res) => {
-    const posts = await Posts.find();
-    console.log("Ping");
-    res.json(posts);
+    try {
+        const posts = await Posts.find();
+        console.log("Ping");
+        res.json(posts);
+    } catch (error) {
+        res.status(400)("Error because of: ", error);   
+    }
 })
 
 
@@ -93,7 +128,7 @@ app.get('/api/getUser', (req, res) => {
 
 
 //Database
-app.get('/api/posts/like/:id', async (req, res) => {
+app.get('/api/posts/like/:id', ensureAuthenticated, async (req, res) => {
     try {
         const id = req.params.id;
         const updatedItem = await Posts.findByIdAndUpdate(id, { $inc: { likes: 1 } });
@@ -105,7 +140,7 @@ app.get('/api/posts/like/:id', async (req, res) => {
 
 })
 
-app.get('/api/posts/dislike/:id', async (req, res) => {
+app.get('/api/posts/dislike/:id', ensureAuthenticated, async (req, res) => {
     try {
         const id = req.params.id;
         console.log("Id is equal to", id);
@@ -120,7 +155,7 @@ app.get('/api/posts/dislike/:id', async (req, res) => {
 
 })
 
-app.post('/api/posts/delete/:id', async (req, res) => {
+app.post('/api/posts/delete/:id', ensureAuthenticated, async (req, res) => {
     const id = req.params.id;
 
     const removedItem = await Posts.findByIdAndDelete(id);
@@ -128,7 +163,7 @@ app.post('/api/posts/delete/:id', async (req, res) => {
     res.redirect('/');
 })
 
-app.post('/api/add', async (req, res) => {
+app.post('/api/add', ensureAuthenticated, async (req, res) => {
 
     console.log(req.body);
 
@@ -167,9 +202,11 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/');
-});
+    app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
+        const token = jwt.sign({id: req.user.id}, jwtToken,{expiresIn: '1h'});
+        res.header('Authorization', `Bearer ${token}`);
+        res.redirect('/');
+    });
 
 app.post('/logout', (req, res) => {
     req.logout(function (err) {

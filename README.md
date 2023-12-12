@@ -1,5 +1,5 @@
-# Mini-Project-9
-This branch is for mini-project-9. To run, clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and frontend and run both through and npm run start and nodemon index.js.
+# Mini-Project-10
+This branch is for mini-project-10. To run, clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and frontend and run both through and npm run start and nodemon index.js.
 
 Required installation:
 - Node.js
@@ -13,39 +13,19 @@ Required installation:
 - Cors
 - Bcrypt.js
 - Passport and Passport Local
+- JWT
 
 ## Update Functionality
-Too many new features so it'll categorized below
-Passport
-- Added new passport features for logging in, out, and registering
-- Have front end check whether user was logged in or not through conditional rendering
-- Have new mongoose schema that stores new registered users with passwords hashed through bcrypt 
-
-Back to front cloud
-- Backend now can interact with frontend
-- Both backend and frontend are uploaded to cloud(render and vercel)
-
-Frontend
-- All views have been deleted
-- Frontend pages have been implemented for each page of the deleted view
-- Used Routes to navigate through frontend easier
-- Added layout that will always be there no matter which page you are on
-- Used fetch with useState and useEffect to grab backend api
-- Modified forms to interact with backend
-
-Backend
-- New get requests to respond to fetch requests from the front
-- Deleted requests that are no longer need, instead modifying needed requests that interact with frontend
-
-Other
-- Added env file that holds sensitive data
-- Modified packages to support back to front support
+Added JWT library to the back end
+- Modified post requests to redirect to backend when user is not logged in
+- Added middleware to handle authentication 
 
 ## Current Bugs
-None
+- Bug with vercel not connecting with the back end
+- Currently commented out verify token not working with the get request to load only when a user is logged in
 
 ## Fixed Bugs
-- Fixed bug where description wasn't showing up due to description having a typo
+None
 
 ## How to Run
 1. Make sure to have the required installations set up

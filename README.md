@@ -1,7 +1,6 @@
-# Mini-Project-10
-This branch is for mini-project-10. To run, clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and frontend and run both through and npm run start and nodemon index.js.
-
-Required installation:
+# Full Stack Project Ver11
+This branch is for the final commits of the Full Stack Project Ver 11. To run, clone, make sure all dependancies are installed on your computer and cd to mini-project-backend and frontend and run both through and npm run start and nodemon index.js. Please note the proxy in package.json if you are running locally 
+Required packages:
 - Node.js
 - Express
 - Nodemon
@@ -14,18 +13,21 @@ Required installation:
 - Bcrypt.js
 - Passport and Passport Local
 - JWT
+- React-router
 
 ## Update Functionality
-Added JWT library to the back end
-- Modified post requests to redirect to backend when user is not logged in
-- Added middleware to handle authentication 
+- Added conditional rendering to layout.js
 
-## Current Bugs
+## Current Bugs/Problems
 - Bug with vercel not connecting with the back end
 - Currently commented out verify token not working with the get request to load only when a user is logged in
 
 ## Fixed Bugs
 None
+
+## Plans to update
+- CSS
+- Try to get vercel working
 
 ## How to Run
 1. Make sure to have the required installations set up

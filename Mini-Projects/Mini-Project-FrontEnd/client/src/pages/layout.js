@@ -5,11 +5,10 @@ function Layout() {
     const [user, newUser] = useState();
 
     useEffect(() =>{
-        fetch('/api/getUser')
+        fetch(`/api/getUser`)
         .then((res) => res.json())
         .then((json) => {
             newUser(json.user.username);
-            console.log(user);
         })
         .catch(() =>{
             newUser(null);
@@ -17,7 +16,11 @@ function Layout() {
     }, [])
 
     const listUser = () =>{
-        return(<div>Welcome {user}</div>);
+        return(
+        <div>
+            <h1>Welcome {user}</h1>
+            <p><Link to = '/logout'>Logout</Link></p>
+        </div>);
     }
 
     return (
@@ -26,9 +29,9 @@ function Layout() {
             <nav>
                 <ul>
                     <li><Link to='/'>Home</Link></li>
-                    <li><Link to='/add'>Add</Link></li>
-                    <li><Link to = '/login'>Login</Link></li>
-                    <li><Link to = '/register'>Register</Link></li>
+                    {user != null ? <li><Link to='/add'>Add</Link></li> : null}
+                    {user == null ? <li><Link to = '/login'>Login</Link></li> : null}
+                    {user == null ? <li><Link to = '/register'>Register</Link></li> : null}
                 </ul>
             </nav>
 

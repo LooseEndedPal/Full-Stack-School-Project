@@ -15,7 +15,6 @@ function Home() {
             .then((res) => res.json())
             .then((data) => {
                 setPosts(data)
-                console.log(data)
                 console.log("Pong");
             })
             .catch((err) =>
@@ -26,9 +25,10 @@ function Home() {
 
     return (
         <div>
+            <h1>My Posts</h1>
+
             {posts.map((posts) => (
                 <div key={posts.id}>
-                    <h1>My Posts</h1>
 
                     <h2>{posts.name}</h2>
                     <p>{posts.description} </p>
@@ -42,10 +42,8 @@ function Home() {
                     </form>
                 </div>
             ))}
-            <form action= {`/add`}>
-                <button type="submit">Add item</button>
-            </form>
-            <a href="/login">Not logged in? Log In</a>&emsp;<a href="/register">Not Registered? Register</a>&emsp;<a href="/logout">Log out</a>
+
+            <br />
         </div>
     );
 }

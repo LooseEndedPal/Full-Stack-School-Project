@@ -1,5 +1,4 @@
 function Update() {
-
     return (
         <div>
             <h1>Add new Post</h1>
